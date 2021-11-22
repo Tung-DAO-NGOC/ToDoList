@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Làm bài tập Javascript",
+      "status": true
+    },
+    {
+      "id": 2,
+      "title": "Đá bóng ở huyện",
+      "status": false
+    },
+    {
+      "id": 5,
+      "title": "Delete me please",
+      "status": true
+    },
+    {
+      "id": 22946,
+      "title": "Làm việc nhà",
+      "status": false
+    },
+    {
+      "id": 4233,
+      "title": "Đi chợ",
+      "status": false
+    }
+  ]
+}
