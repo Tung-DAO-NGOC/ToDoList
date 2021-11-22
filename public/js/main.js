@@ -83,6 +83,7 @@ async function getTodos() {
 async function postTodos(title) {
 	try {
 		const res = await postTodosAPI(title);
+		todo_inputEl.value = "";
 		getTodos();
 	} catch (error) {
 		console.log(error);
