@@ -1,10 +1,10 @@
 /*
-1. Lấy danh sách hiện có
-2. Thêm cv
+// 1. Lấy danh sách hiện có
+// 2. Thêm cv
 3. Sửa cv
-4. Xóa cv
+// 4. Xóa cv
 5. Lọc cv theo trạng thái
-6. Thay đổi trạng thái 
+// 6. Thay đổi trạng thái 
 */
 // Truy cập thành phần
 const todo_listEl = document.querySelector(".todo-list");
@@ -17,12 +17,16 @@ function createID() {
 	return Math.floor(Math.random() * 100000);
 }
 
-// API
+// API Function
 // Lấy danh sách todo
+
+// Get Todo
 
 function getTodosAPI() {
 	return axios.get("/todos"); // => Luôn trả về promise
 }
+
+// Post Todos
 
 function postTodosAPI(titleTodo) {
 	return axios.post("/todos", {
@@ -32,11 +36,73 @@ function postTodosAPI(titleTodo) {
 	});
 }
 
+//Delete Todo
+
 function deleteTodosAPI(id) {
 	return axios({
 		method: `delete`,
 		url: `/todos/${id}`,
 	});
+}
+
+// Patch Todo - Status
+
+function patchStatusTodosAPI(id, statusInput) {
+	console.log(statusInput);
+	return axios.patch(`/todos/${id}`, {
+		status: statusInput,
+	});
+}
+
+// Website function
+// Get Todos
+async function getTodos() {
+	try {
+		const res = await getTodosAPI();
+		todos = res.data;
+		renderUI(todos);
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+//Add Todos
+
+async function postTodos(title) {
+	try {
+		const res = await postTodosAPI(title);
+		todo_inputEl.value = "";
+		getTodos();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+todo_btnAddEl.addEventListener(`click`, function () {
+	let todoTitle = todo_inputEl.value;
+	if (todoTitle === "") {
+		alert("Tiêu đề không được để trống");
+		return;
+	}
+	postTodos(todoTitle);
+});
+
+async function deleteTodos(id) {
+	try {
+		const res = await deleteTodosAPI(id);
+		if (res.status === 200) getTodos();
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+async function changeStatusTodos(id, status) {
+	try {
+		const res = await patchStatusTodosAPI(id, !status ? true : false);
+		getTodos();
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 // Render UI - hiển thị danh sách Todo ra ngoài giao diện
@@ -51,7 +117,9 @@ function renderUI(arr) {
 			todo_listEl.innerHTML += `
                 <div class="todo-item ${work.status ? `active-todo` : ``}">
                     <div class="todo-item-title">
-                        <input type="checkbox" ${work.status ? `checked` : ``}/>
+                        <input type="checkbox" ${work.status ? `checked` : ``} onclick="changeStatusTodos(${work.id}, ${
+				work.status
+			})" />
                         <p>${work.title}</p>
                      </div>
                      <div class="option">
@@ -67,46 +135,6 @@ function renderUI(arr) {
 		}
 	}
 }
-
-// Hàm xử lý
-// Lấy danh sách to do
-async function getTodos() {
-	try {
-		const res = await getTodosAPI();
-		todos = res.data;
-		renderUI(todos);
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-async function postTodos(title) {
-	try {
-		const res = await postTodosAPI(title);
-		todo_inputEl.value = "";
-		getTodos();
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-async function deleteTodos(id) {
-	try {
-		const res = await deleteTodosAPI(id);
-		if (res.status === 200) getTodos();
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-todo_btnAddEl.addEventListener(`click`, function () {
-	let todoTitle = todo_inputEl.value;
-	if (todoTitle === "") {
-		alert("Tiêu đề không được để trống");
-		return;
-	}
-	postTodos(todoTitle);
-});
 
 // Main
 
