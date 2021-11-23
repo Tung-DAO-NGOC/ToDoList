@@ -106,6 +106,9 @@ todo_btnAddEl.addEventListener(`click`, function () {
 // Delete todo
 
 async function deleteTodos(id) {
+	if (disableRadio === true) {
+		return;
+	}
 	try {
 		const res = await deleteTodosAPI(id);
 		if (res.status === 200) getTodos();
