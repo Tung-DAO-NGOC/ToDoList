@@ -2,6 +2,11 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: -moz-none;
+	-o-user-select: none;
+	user-select: none;
 }
 
 body {
@@ -96,7 +101,7 @@ h1 {
 .todo-input input:focus {
 	outline: none;
 }
-.todo-input button {
+#btn-add {
 	text-transform: uppercase;
 	display: inline-block;
 	height: 100%;
@@ -109,8 +114,25 @@ h1 {
 	outline: none;
 }
 
-.todo-input button:hover {
+#btn-add:hover {
 	background-color: #ff5e5e;
+}
+
+#btn-edit {
+	text-transform: uppercase;
+	display: inline-block;
+	height: 100%;
+	padding: 0 1.3rem;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	background-color: #fff;
+	color: #ff6666;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	outline: none;
+}
+
+#btn-edit:hover {
+	background-color: #ffdddd;
 }
 
 .todo-option {

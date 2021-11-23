@@ -20,8 +20,8 @@ const radio_unactive = document.querySelector("#unactive");
 const radio_active = document.querySelector("#active");
 // Khai báo biến
 let todos = [];
-let disable_radio = false;
-
+let disableRadio = false;
+let listStatus = `all`;
 function createID() {
 	return Math.floor(Math.random() * 100000);
 }
@@ -76,7 +76,7 @@ async function getTodos() {
 	try {
 		const res = await getTodosAPI();
 		todos = res.data;
-		renderUI(todos);
+		renderUI(todos, listStatus);
 	} catch (error) {
 		console.log(error);
 	}
@@ -103,6 +103,8 @@ todo_btnAddEl.addEventListener(`click`, function () {
 	postTodos(todoTitle);
 });
 
+// Delete todo
+
 async function deleteTodos(id) {
 	try {
 		const res = await deleteTodosAPI(id);
@@ -122,6 +124,8 @@ async function changeStatusTodos(id) {
 	}
 }
 
+// Edit title todo
+
 async function changeTitleTodos(id, title) {
 	try {
 		const res = await patchTitleTodosAPI(id, title);
@@ -132,32 +136,60 @@ async function changeTitleTodos(id, title) {
 }
 
 function editTodos(id) {
+	disableRadio = true;
 	toggleRadio();
 	const editTodo = todos.find((todo) => todo.id === id);
-	todo_editDivEl.classList.remove("hidden");
-	todo_addDivEl.classList.add("hidden");
 	todo_editInputEl.value = editTodo.title;
 	todo_editIndexEl.value = editTodo.id;
+	todo_editDivEl.classList.remove("hidden");
+	todo_addDivEl.classList.add("hidden");
 }
 
 todo_btnEditEl.addEventListener(`click`, function () {
+	disableRadio = false;
+	toggleRadio();
 	const editTitle = todo_editInputEl.value;
 	const editID = todo_editIndexEl.value;
 	changeTitleTodos(editID, editTitle);
 	todo_editDivEl.classList.add("hidden");
 	todo_addDivEl.classList.remove("hidden");
-	toggleRadio();
+});
+
+radio_active.addEventListener(`change`, function () {
+	listStatus = `active`;
+	renderUI(todos, listStatus);
+});
+
+radio_all.addEventListener(`change`, function () {
+	listStatus = `all`;
+	renderUI(todos, listStatus);
+});
+
+radio_unactive.addEventListener(`change`, function () {
+	listStatus = `unactive`;
+	renderUI(todos, listStatus);
 });
 
 // Render UI - hiển thị danh sách Todo ra ngoài giao diện
 
-function renderUI(arr) {
+function renderUI(arr, listStatus) {
 	todo_listEl.innerHTML = "";
-	if (arr.length === 0) {
+	switch (listStatus) {
+		case `unactive`:
+			list = arr.filter((todo) => todo.status === false);
+			break;
+		case `active`:
+			list = arr.filter((todo) => todo.status === true);
+			break;
+		case `all`:
+			list = arr;
+			break;
+	}
+	if (list.length === 0) {
 		todo_listEl.innerHTML = "Không có công việc nào trong danh sách";
 		return;
 	} else {
-		for (const work of arr) {
+		for (const work of list) {
 			todo_listEl.innerHTML += `
                 <div class="todo-item ${work.status ? `active-todo` : ``}">
                     <div class="todo-item-title">
@@ -181,10 +213,13 @@ function renderUI(arr) {
 }
 
 function toggleRadio() {
-	disable_radio = !disable_radio;
-	radio_active.disabled = disable_radio;
-	radio_unactive.disabled = disable_radio;
-	radio_all.disabled = disable_radio;
+	// disableRadio = !disableRadio;
+	radio_active.disabled = disableRadio;
+	radio_unactive.disabled = disableRadio;
+	radio_all.disabled = disableRadio;
+	todo_listEl.querySelectorAll("input").forEach((element) => {
+		element.disabled = disableRadio;
+	});
 }
 
 // Main
