@@ -2,17 +2,17 @@
   "todos": [
     {
       "id": 12491,
-      "title": "Task1",
-      "status": false
+      "title": "Task 1",
+      "status": true
     },
     {
       "id": 63374,
-      "title": "Task2",
+      "title": "Task 2",
       "status": true
     },
     {
       "id": 27881,
-      "title": "Task3",
+      "title": "Task 3",
       "status": false
     }
   ]
