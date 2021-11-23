@@ -1,24 +1,9 @@
 {
   "todos": [
     {
-      "id": 12491,
-      "title": "Task 0",
-      "status": true
-    },
-    {
-      "id": 63374,
-      "title": "Task 23",
-      "status": true
-    },
-    {
       "id": 27881,
       "title": "Task 3",
       "status": true
-    },
-    {
-      "id": 34773,
-      "title": "Task 11",
-      "status": false
     },
     {
       "id": 22601,

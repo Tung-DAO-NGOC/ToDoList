@@ -107,6 +107,7 @@ todo_btnAddEl.addEventListener(`click`, function () {
 
 async function deleteTodos(id) {
 	if (disableRadio === true) {
+		alert("Hãy hoàn thiện việc sửa trước khi có thao tác khác!");
 		return;
 	}
 	try {
